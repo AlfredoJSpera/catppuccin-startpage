@@ -14,7 +14,7 @@ const default_configuration = {
 		scale: "C",
 	},
 	clock: {
-		format: "H:i, A B Y",
+		format: "H:i, A, e B Y",
 		icon_color: palette.maroon,
 	},
 	additionalClocks: [],
@@ -34,7 +34,7 @@ const default_configuration = {
 	openLastVisitedTab: true,
 	tabs: [
 		{
-			name: "Start",
+			name: "main",
 			background_url: "src/img/banners/new/blue.gif",
 			categories: [
 				{
@@ -120,64 +120,6 @@ const default_configuration = {
 							url: "https://stackoverflow.com",
 							icon: "brand-stackoverflow",
 							icon_color: palette.red,
-						},
-					],
-				},
-			],
-		},
-		{
-			name: "chi ll",
-			background_url: "src/img/banners/banner_08.gif",
-			categories: [
-				{
-					name: "social media",
-					links: [
-						{
-							name: "telegram",
-							url: "https://web.telegram.org",
-							icon: "brand-telegram",
-							icon_color: palette.green,
-						},
-						{
-							name: "facebook",
-							url: "https://www.facebook.com",
-							icon: "brand-facebook",
-							icon_color: palette.peach,
-						},
-						{
-							name: "reddit",
-							url: "https://www.reddit.com",
-							icon: "brand-reddit",
-							icon_color: palette.red,
-						},
-					],
-				},
-				{
-					name: "video",
-					links: [
-						{
-							name: "anilist",
-							url: "https://anilist.co/home",
-							icon: "brand-funimation",
-							icon_color: palette.green,
-						},
-						{
-							name: "youtube",
-							url: "https://www.youtube.com",
-							icon: "brand-youtube",
-							icon_color: palette.peach,
-						},
-						{
-							name: "patreon",
-							url: "https://www.patreon.com",
-							icon: "brand-patreon",
-							icon_color: palette.red,
-						},
-						{
-							name: "kyivstar",
-							url: "https://tv.kyivstar.ua",
-							icon: "star-filled",
-							icon_color: palette.blue,
 						},
 					],
 				},

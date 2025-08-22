@@ -1,52 +1,51 @@
-
 // Statusbar component for tab navigation and widgets
 class Statusbar extends Component {
-  // External DOM element references
-  externalRefs = {};
+	// External DOM element references
+	externalRefs = {};
 
-  // CSS selector references for DOM elements
-  refs = {
-    categories: ".categories ul",
-    tabs: "#tabs ul li",
-    indicator: ".indicator",
-    fastlink: ".fastlink",
-  };
+	// CSS selector references for DOM elements
+	refs = {
+		categories: ".categories ul",
+		tabs: "#tabs ul li",
+		indicator: ".indicator",
+		fastlink: ".fastlink",
+	};
 
-  // Currently active tab index
-  currentTabIndex = 0;
+	// Currently active tab index
+	currentTabIndex = 0;
 
-  /**
-   * Initialise the statusbar component
-   */
-  constructor() {
-    super();
+	/**
+	 * Initialise the statusbar component
+	 */
+	constructor() {
+		super();
 
-    this.setDependencies();
-  }
+		this.setDependencies();
+	}
 
-  /**
-   * Sets up component dependencies and external references
-   */
-  setDependencies() {
-    this.externalRefs = {
-      categories: this.parentNode.querySelectorAll(this.refs.categories),
-    };
-  }
+	/**
+	 * Sets up component dependencies and external references
+	 */
+	setDependencies() {
+		this.externalRefs = {
+			categories: this.parentNode.querySelectorAll(this.refs.categories),
+		};
+	}
 
-  /**
-   * Returns CSS import dependencies for this component
-   * @returns {string[]} Array of CSS file paths
-   */
-  imports() {
-    return [this.getFontResource('roboto'), this.getIconResource('material'), this.getLibraryResource('awoo')];
-  }
+	/**
+	 * Returns CSS import dependencies for this component
+	 * @returns {string[]} Array of CSS file paths
+	 */
+	imports() {
+		return [this.getFontResource("roboto"), this.getIconResource("material"), this.getLibraryResource("awoo")];
+	}
 
-  /**
-   * Generates component CSS styles
-   * @returns {string} CSS styles for the statusbar
-   */
-  style() {
-    return `
+	/**
+	 * Generates component CSS styles
+	 * @returns {string} CSS styles for the statusbar
+	 */
+	style() {
+		return `
       *:not(:defined) { display: none; }
 
       #tabs,
@@ -210,14 +209,14 @@ class Statusbar extends Component {
         width: 70%;
       }
     `;
-  }
+	}
 
-  /**
-   * Generates HTML template for the statusbar component
-   * @returns {string} HTML template with tabs and widgets
-   */
-  template() {
-    return `
+	/**
+	 * Generates HTML template for the statusbar component
+	 * @returns {string} HTML template with tabs and widgets
+	 */
+	template() {
+		return `
         <div id="tabs">
             <cols>
                 <button class="+ fastlink">
@@ -230,137 +229,137 @@ class Statusbar extends Component {
                 </div>
             </cols>
         </div>`;
-  }
+	}
 
-  /**
-   * Sets up event listeners for tab interactions and navigation
-   */
-  setEvents() {
-    this.refs.tabs.forEach((tab) => (tab.onclick = ({ target }) => this.handleTabChange(target)));
+	/**
+	 * Sets up event listeners for tab interactions and navigation
+	 */
+	setEvents() {
+		this.refs.tabs.forEach((tab) => (tab.onclick = ({ target }) => this.handleTabChange(target)));
 
-    document.onkeydown = (e) => this.handleKeyPress(e);
-    document.onwheel = (e) => this.handleWheelScroll(e);
-    this.refs.fastlink.onclick = () => {
-      console.log(CONFIG.fastlink);
-      if (CONFIG.config.fastlink) {
-        window.location.href = CONFIG.config.fastlink;
-      }
-    };
+		document.onkeydown = (e) => this.handleKeyPress(e);
+		document.onwheel = (e) => this.handleWheelScroll(e);
+		this.refs.fastlink.onclick = () => {
+			console.log(CONFIG.fastlink);
+			if (CONFIG.config.fastlink) {
+				window.location.href = CONFIG.config.fastlink;
+			}
+		};
 
-    // Store current tab index before page unload
-    if (CONFIG.openLastVisitedTab) {
-      window.onbeforeunload = () => this.saveCurrentTab();
-    }
-  }
+		// Store current tab index before page unload
+		if (CONFIG.openLastVisitedTab) {
+			window.onbeforeunload = () => this.saveCurrentTab();
+		}
+	}
 
-  /**
-   * Saves the currently active tab index to localStorage
-   */
-  saveCurrentTab() {
-    localStorage.lastVisitedTab = this.currentTabIndex;
-  }
+	/**
+	 * Saves the currently active tab index to localStorage
+	 */
+	saveCurrentTab() {
+		localStorage.lastVisitedTab = this.currentTabIndex;
+	}
 
-  /**
-   * Opens the last visited tab from localStorage
-   */
-  openLastVisitedTab() {
-    if (!CONFIG.openLastVisitedTab) return;
-    this.activateByKey(localStorage.lastVisitedTab);
-  }
+	/**
+	 * Opens the last visited tab from localStorage
+	 */
+	openLastVisitedTab() {
+		if (!CONFIG.openLastVisitedTab) return;
+		this.activateByKey(localStorage.lastVisitedTab);
+	}
 
-  /**
-   * Handles tab change events
-   * @param {Element} tab - The clicked tab element
-   */
-  handleTabChange(tab) {
-    this.activateByKey(Number(tab.getAttribute("tab-index")));
-  }
+	/**
+	 * Handles tab change events
+	 * @param {Element} tab - The clicked tab element
+	 */
+	handleTabChange(tab) {
+		this.activateByKey(Number(tab.getAttribute("tab-index")));
+	}
 
-  /**
-   * Handles mouse wheel scrolling for tab navigation
-   * @param {WheelEvent} event - The wheel event object
-   */
-  handleWheelScroll(event) {
-    if (!event) return;
+	/**
+	 * Handles mouse wheel scrolling for tab navigation
+	 * @param {WheelEvent} event - The wheel event object
+	 */
+	handleWheelScroll(event) {
+		if (!event) return;
 
-    let { target, wheelDelta } = event;
+		let { target, wheelDelta } = event;
 
-    if (target.shadow && target.shadow.activeElement) return;
+		if (target.shadow && target.shadow.activeElement) return;
 
-    // Find currently active tab
-    let activeTab = -1;
-    this.refs.tabs.forEach((tab, index) => {
-      if (tab.getAttribute("active") === "") {
-        activeTab = index;
-      }
-    });
+		// Find currently active tab
+		let activeTab = -1;
+		this.refs.tabs.forEach((tab, index) => {
+			if (tab.getAttribute("active") === "") {
+				activeTab = index;
+			}
+		});
 
-    // Navigate to next or previous tab based on wheel direction
-    if (wheelDelta > 0) {
-      this.activateByKey((activeTab + 1) % (this.refs.tabs.length - 1));
-    } else {
-      this.activateByKey(activeTab - 1 < 0 ? this.refs.tabs.length - 2 : activeTab - 1);
-    }
-  }
+		// Navigate to next or previous tab based on wheel direction
+		if (wheelDelta > 0) {
+			this.activateByKey((activeTab + 1) % (this.refs.tabs.length - 1));
+		} else {
+			this.activateByKey(activeTab - 1 < 0 ? this.refs.tabs.length - 2 : activeTab - 1);
+		}
+	}
 
-  /**
-   * Handles keyboard shortcuts for tab navigation
-   * @param {KeyboardEvent} event - The keyboard event object
-   */
-  handleKeyPress(event) {
-    if (!event) return;
+	/**
+	 * Handles keyboard shortcuts for tab navigation
+	 * @param {KeyboardEvent} event - The keyboard event object
+	 */
+	handleKeyPress(event) {
+		if (!event) return;
 
-    let { target, key } = event;
+		let { target, key } = event;
 
-    if (target.shadow && target.shadow.activeElement) return;
+		if (target.shadow && target.shadow.activeElement) return;
 
-    // Activate tab by number key (1-5)
-    if (Number.isInteger(parseInt(key)) && key <= this.externalRefs.categories.length) {
-      this.activateByKey(key - 1);
-    }
-  }
+		// Activate tab by number key (1-5)
+		if (Number.isInteger(parseInt(key)) && key <= this.externalRefs.categories.length) {
+			this.activateByKey(key - 1);
+		}
+	}
 
-  /**
-   * Activates a tab by its index
-   * @param {number} key - The tab index to activate
-   */
-  activateByKey(key) {
-    if (key < 0) return;
-    this.currentTabIndex = key;
+	/**
+	 * Activates a tab by its index
+	 * @param {number} key - The tab index to activate
+	 */
+	activateByKey(key) {
+		if (key < 0) return;
+		this.currentTabIndex = key;
 
-    this.activate(this.refs.tabs, this.refs.tabs[key]);
-    this.activate(this.externalRefs.categories, this.externalRefs.categories[key]);
-  }
+		this.activate(this.refs.tabs, this.refs.tabs[key]);
+		this.activate(this.externalRefs.categories, this.externalRefs.categories[key]);
+	}
 
-  /**
-   * Creates tab elements based on categories count
-   */
-  createTabs() {
-    const categoriesCount = this.externalRefs.categories.length;
+	/**
+	 * Creates tab elements based on categories count
+	 */
+	createTabs() {
+		const categoriesCount = this.externalRefs.categories.length;
 
-    for (let i = 0; i <= categoriesCount; i++) {
-      this.refs.indicator.innerHTML += `<li tab-index=${i} ${i == 0 ? "active" : ""}></li>`;
-    }
-  }
+		for (let i = 0; i <= categoriesCount; i++) {
+			this.refs.indicator.innerHTML += `<li tab-index=${i} ${i == 0 ? "active" : ""}></li>`;
+		}
+	}
 
-  /**
-   * Activates a specific item by setting active attribute
-   * @param {NodeList} target - Collection of elements to process
-   * @param {Element} item - The specific item to activate
-   */
-  activate(target, item) {
-    target.forEach((i) => i.removeAttribute("active"));
-    item.setAttribute("active", "");
-  }
+	/**
+	 * Activates a specific item by setting active attribute
+	 * @param {NodeList} target - Collection of elements to process
+	 * @param {Element} item - The specific item to activate
+	 */
+	activate(target, item) {
+		target.forEach((i) => i.removeAttribute("active"));
+		item.setAttribute("active", "");
+	}
 
-  /**
-   * Component lifecycle callback when element is connected to DOM
-   */
-  connectedCallback() {
-    this.render().then(() => {
-      this.createTabs();
-      this.setEvents();
-      this.openLastVisitedTab();
-    });
-  }
+	/**
+	 * Component lifecycle callback when element is connected to DOM
+	 */
+	connectedCallback() {
+		this.render().then(() => {
+			this.createTabs();
+			this.setEvents();
+			this.openLastVisitedTab();
+		});
+	}
 }
