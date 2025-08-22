@@ -43,10 +43,6 @@ const default_configuration = {
 	fastlink: "https://www.github.com",
 	// Whether to restore last active tab on load
 	openLastVisitedTab: true,
-	tabsColor: {
-		one: palette.sky,
-		two: palette.green,
-	},
 	tabs: [
 		{
 			name: "main",
