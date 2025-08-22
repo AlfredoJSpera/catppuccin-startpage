@@ -61,9 +61,9 @@ class Config {
 	config;
 
 	/**
-	 * Initialise the configuration with user settings and palette
+	 * Initialize the configuration with user settings and palette
 	 * @param {Object} configuration - User configuration object
-	 * @param {Object} palette - Colour palette for the startpage
+	 * @param {Object} palette - Color palette for the startpage
 	 */
 	constructor(configuration, palette) {
 		this.config = configuration;
@@ -79,6 +79,32 @@ class Config {
 			...this,
 			__proto__: this.__proto__,
 			set: (target, prop, value) => this.settingUpdatedCallback(target, prop, value),
+		});
+	}
+
+	/**
+	 * Determines whether localStorage can be overridden for a given setting
+	 * If the setting is for the tabs section, always override
+	 * @param {string} setting - The setting name to check
+	 * @returns {boolean} Whether the setting can override storage
+	 */
+	canOverrideStorage(setting) {
+		return setting in this.config && (this.config.overrideStorage || setting === "tabs");
+	}
+
+	/**
+	 * Set default configuration values or load them from local storage
+	 * @returns {void}
+	 */
+	autoConfig() {
+		Object.keys(this.defaults).forEach((setting) => {
+			if (this.canOverrideStorage(setting)) {
+				this[setting] = this.config[setting];
+			} else if (this.storage.hasValue(setting)) {
+				this[setting] = this.storage.get(setting);
+			} else {
+				this[setting] = this.defaults[setting];
+			}
 		});
 	}
 
@@ -101,30 +127,8 @@ class Config {
 	}
 
 	/**
-	 * Set default configuration values or load them from local storage
-	 * @returns {void}
-	 */
-	autoConfig() {
-		Object.keys(this.defaults).forEach((setting) => {
-			if (this.canOverrideStorage(setting)) this[setting] = this.config[setting];
-			else if (this.storage.hasValue(setting)) this[setting] = this.storage.get(setting);
-			else this[setting] = this.defaults[setting];
-		});
-	}
-
-	/**
-	 * Determines whether localStorage can be overridden for a given setting
-	 * If the setting is for the tabs section, always override
-	 * @param {string} setting - The setting name to check
-	 * @returns {boolean} Whether the setting can override storage
-	 */
-	canOverrideStorage(setting) {
-		return setting in this.config && (this.config.overrideStorage || setting === "tabs");
-	}
-
-	/**
-	 * Serialise the configuration object for export or storage
-	 * @returns {Object} Serialised configuration object
+	 * Serialize the configuration object for export or storage
+	 * @returns {Object} Serialized configuration object
 	 */
 	toJSON() {
 		return {

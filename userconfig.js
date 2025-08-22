@@ -8,30 +8,45 @@ const preferredDarkTheme = mocha;
 let palette = initThemeSystem(preferredLightTheme, preferredDarkTheme);
 
 const default_configuration = {
+	// Whether to override localStorage with config values
 	overrideStorage: true,
 	temperature: {
 		location: "Napoli",
+		// Temperature scale: C for Celsius, F for Fahrenheit
 		scale: "C",
 	},
+	// https://github.com/AlfredoJSpera/catppuccin-startpage/blob/main/docs/CLOCK.md
 	clock: {
 		format: "H:i, A, e B Y",
 		icon_color: palette.maroon,
 	},
+	// Extra clocks to display alongside main clock
 	additionalClocks: [],
 	search: {
+		// Search engine shortcuts and their URLs
 		engines: {
 			d: ["https://duckduckgo.com/?q=", "DuckDuckGo"],
 		},
 		default: "d",
 	},
+	// Keyboard shortcuts for actions
 	keybindings: {
 		s: "search-bar",
 	},
+	// List of disabled components
 	disabled: [],
+	// Whether to use local fonts instead of Google Fonts CDN
 	localIcons: true,
+	// Whether to use local fonts instead of Google Fonts CDN
 	localFonts: true,
+	// Link bottom left
 	fastlink: "https://www.github.com",
+	// Whether to restore last active tab on load
 	openLastVisitedTab: true,
+	tabsColor: {
+		one: palette.sky,
+		two: palette.green,
+	},
 	tabs: [
 		{
 			name: "main",

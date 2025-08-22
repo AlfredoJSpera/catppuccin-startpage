@@ -116,7 +116,7 @@ class Statusbar extends Component {
       #tabs ul li[active]:nth-child(5) ~ li:last-child { margin: 0 0 0 140px; }
 
       #tabs ul li[active]:nth-child(1) ~ li:last-child {
-          --flavour: ${CONFIG.palette.green};
+          --flavour: ${CONFIG.palette.sky};
       }
 
       #tabs ul li[active]:nth-child(2) ~ li:last-child {
@@ -295,7 +295,7 @@ class Statusbar extends Component {
 		});
 
 		// Navigate to next or previous tab based on wheel direction
-		if (wheelDelta > 0) {
+		if (wheelDelta < 0) {
 			this.activateByKey((activeTab + 1) % (this.refs.tabs.length - 1));
 		} else {
 			this.activateByKey(activeTab - 1 < 0 ? this.refs.tabs.length - 2 : activeTab - 1);

@@ -1,3 +1,5 @@
+/*globals CONFIG*/
+
 // Global registry of rendered components
 const RenderedComponents = {};
 
